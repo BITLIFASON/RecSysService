@@ -4,7 +4,7 @@ from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
-from service.api.exceptions import UserNotFoundError, AuthorizationError
+from service.api.exceptions import UserNotFoundError, AuthorizationError, ModelNotFoundError
 from service.log import app_logger
 from service import recmodels
 from service.credentials import API_KEY
@@ -51,6 +51,8 @@ async def get_reco(
     k_recs = request.app.state.k_recs
     if model_name == 'simple_range':
         reco = recmodels.simple_range(k_recs)
+    else:
+        raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
     return RecoResponse(user_id=user_id, items=reco)
 
