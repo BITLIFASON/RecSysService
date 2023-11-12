@@ -44,7 +44,7 @@ class AuthorizationError(AppException):
             self,
             status_code: int = HTTPStatus.UNAUTHORIZED,
             error_key: str = "an_unauthorized",
-            error_message: str = "API Key is invalid",
+            error_message: str = "API key is invalid",
             error_loc: tp.Optional[tp.Sequence[str]] = None,
     ):
         super().__init__(status_code, error_key, error_message, error_loc)

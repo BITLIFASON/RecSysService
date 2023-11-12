@@ -4,6 +4,7 @@ from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
+from service.models import Error
 from service.api.exceptions import UserNotFoundError, AuthorizationError, ModelNotFoundError
 from service.log import app_logger
 from service import recmodels
@@ -12,6 +13,14 @@ from service.credentials import API_KEY
 class RecoResponse(BaseModel):
     user_id: int
     items: List[int]
+
+
+responses = {
+    200: {"description": "Success", "model": Error},
+    404: {"description": "Model or user is unknown", "model": Error},
+    401: {"description": "API key is invalid", "model": Error},
+    403: {"description": "Not authenticated", "model": Error}
+}
 
 
 router = APIRouter()
@@ -36,6 +45,7 @@ async def health() -> str:
     path="/reco/{model_name}/{user_id}",
     tags=["Recommendations"],
     response_model=RecoResponse,
+    responses=responses
 )
 async def get_reco(
         request: Request,
