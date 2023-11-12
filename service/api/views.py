@@ -1,12 +1,13 @@
 from typing import List
 
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import APIRouter, FastAPI, Request, Security
+from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
-from service.api.exceptions import UserNotFoundError
+from service.api.exceptions import UserNotFoundError, AuthorizationError
 from service.log import app_logger
 from service import recmodels
-
+from service.credentials import API_KEY
 
 class RecoResponse(BaseModel):
     user_id: int
@@ -14,6 +15,13 @@ class RecoResponse(BaseModel):
 
 
 router = APIRouter()
+api_key_header = APIKeyHeader(name='X-SECRET')
+
+
+def verify_token(token: str = Security(api_key_header)) -> str:
+    if token == API_KEY:
+        return token
+    raise AuthorizationError()
 
 
 @router.get(
@@ -33,6 +41,7 @@ async def get_reco(
         request: Request,
         model_name: str,
         user_id: int,
+        token: str = Security(verify_token)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
