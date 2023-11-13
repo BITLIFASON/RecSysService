@@ -47,7 +47,7 @@ async def health() -> str:
     path="/reco/{model_name}/{user_id}",
     tags=["Recommendations"],
     response_model=RecoResponse,
-    responses=responses  # type: ignore
+    responses=responses
 )
 async def get_reco(
     request: Request, model_name: str, user_id: int, token: str = Security(verify_token)
