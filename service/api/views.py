@@ -1,4 +1,4 @@
-from typing import List
+import typing
 
 from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
@@ -12,7 +12,7 @@ from service.log import app_logger
 
 class RecoResponse(BaseModel):
     user_id: int
-    items: List[int]
+    items: typing.List[int]
 
 
 error_sample = {"error_key": "string", "error_message": "string", "error_loc": "string"}
@@ -42,8 +42,12 @@ async def health() -> str:
     return "I am alive"
 
 
+@typing.no_type_check
 @router.get(
-    path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse, responses=responses
+    path="/reco/{model_name}/{user_id}",
+    tags=["Recommendations"],
+    response_model=RecoResponse,
+    responses=responses # type: ignore
 )
 async def get_reco(
     request: Request, model_name: str, user_id: int, token: str = Security(verify_token)
