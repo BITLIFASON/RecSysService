@@ -25,7 +25,7 @@ responses = {
 
 
 router = APIRouter()
-api_key_header = APIKeyHeader(name="X-SECRET")
+api_key_header = APIKeyHeader(name="Authorization")
 
 
 def verify_token(token: str = Security(api_key_header)) -> str:
