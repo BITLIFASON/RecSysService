@@ -8,7 +8,6 @@ from service import recmodels
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.credentials import API_KEY
 from service.log import app_logger
-from service.models import Error
 
 
 class RecoResponse(BaseModel):
@@ -16,11 +15,12 @@ class RecoResponse(BaseModel):
     items: List[int]
 
 
+error_sample = {"error_key": "string", "error_message": "string", "error_loc": "string"}
 responses = {
-    200: {"description": "Success", "model": Error},
-    404: {"description": "Model or user is unknown", "model": Error},
-    401: {"description": "API key is invalid", "model": Error},
-    403: {"description": "Not authenticated", "model": Error},
+    200: {"description": "Success", "model": error_sample},
+    404: {"description": "Model or user is unknown", "model": error_sample},
+    401: {"description": "API key is invalid", "model": error_sample},
+    403: {"description": "Not authenticated", "model": error_sample},
 }
 
 
