@@ -54,3 +54,15 @@ def test_get_reco_for_unknown_model(
         response = client.get(path, headers={"Authorization": API_KEY})
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json()["errors"][0]["error_key"] == "model_not_found"
+
+
+def test_get_reco_for_authorization(
+        client: TestClient,
+) -> None:
+    user_id = 123
+    model_name = "simple_range"
+    path = GET_RECO_PATH.format(model_name=model_name, user_id=user_id)
+    with client:
+        response = client.get(path, headers={"Authorization": "MISSED_API"})
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert response.json()["errors"][0]["error_key"] == "an_unauthorized"
