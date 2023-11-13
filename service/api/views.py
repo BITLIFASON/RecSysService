@@ -4,11 +4,12 @@ from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
-from service.models import Error
-from service.api.exceptions import UserNotFoundError, AuthorizationError, ModelNotFoundError
-from service.log import app_logger
 from service import recmodels
+from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.credentials import API_KEY
+from service.log import app_logger
+from service.models import Error
+
 
 class RecoResponse(BaseModel):
     user_id: int
@@ -19,12 +20,12 @@ responses = {
     200: {"description": "Success", "model": Error},
     404: {"description": "Model or user is unknown", "model": Error},
     401: {"description": "API key is invalid", "model": Error},
-    403: {"description": "Not authenticated", "model": Error}
+    403: {"description": "Not authenticated", "model": Error},
 }
 
 
 router = APIRouter()
-api_key_header = APIKeyHeader(name='X-SECRET')
+api_key_header = APIKeyHeader(name="X-SECRET")
 
 
 def verify_token(token: str = Security(api_key_header)) -> str:
@@ -42,24 +43,18 @@ async def health() -> str:
 
 
 @router.get(
-    path="/reco/{model_name}/{user_id}",
-    tags=["Recommendations"],
-    response_model=RecoResponse,
-    responses=responses
+    path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse, responses=responses
 )
 async def get_reco(
-        request: Request,
-        model_name: str,
-        user_id: int,
-        token: str = Security(verify_token)
+    request: Request, model_name: str, user_id: int, token: str = Security(verify_token)
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
-    if user_id > 10 ** 9:
+    if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
     k_recs = request.app.state.k_recs
-    if model_name == 'simple_range':
+    if model_name == "simple_range":
         reco = recmodels.simple_range(k_recs)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")

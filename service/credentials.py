@@ -1,1 +1,1 @@
-API_KEY = 'aboba'
+API_KEY = "Bearer aboba"

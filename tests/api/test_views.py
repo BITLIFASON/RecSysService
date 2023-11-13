@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from starlette.testclient import TestClient
 
-from service.settings import ServiceConfig
 from service.credentials import API_KEY
+from service.settings import ServiceConfig
 
 GET_RECO_PATH = "/reco/{model_name}/{user_id}"
 
@@ -45,7 +45,7 @@ def test_get_reco_for_unknown_user(
 
 
 def test_get_reco_for_unknown_model(
-        client: TestClient,
+    client: TestClient,
 ) -> None:
     user_id = 123
     model_name = "some_model"
@@ -57,7 +57,7 @@ def test_get_reco_for_unknown_model(
 
 
 def test_get_reco_for_authorization(
-        client: TestClient,
+    client: TestClient,
 ) -> None:
     user_id = 123
     model_name = "simple_range"
