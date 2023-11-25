@@ -23,7 +23,7 @@ class Popular:
     def __init__(self, N_recs: int = 10):
         self.N_recs = N_recs
 
-        with open("/models/popular_answer.pkl", "rb") as file:
+        with open("./service/recmodels_folder/popular_answer.pkl", "rb") as file:
             self.answer = pickle.load(file)
 
     def predict(self):
@@ -36,7 +36,7 @@ class userKNN:
     def __init__(self, N_recs: int = 10):
         self.N_recs = N_recs
 
-        with lzma.open("/models/user_knn.xz", "rb") as file:
+        with lzma.open("./service/recmodels_folder/user_knn.xz", "rb") as file:
             self.user_knn = pickle.load(file)
 
         self.popular_model = Popular(self.N_recs)
@@ -49,6 +49,8 @@ class userKNN:
         else:
             reco = self.popular_model.predict()
         return reco
+
+
 #
 #
 app_config = get_config()

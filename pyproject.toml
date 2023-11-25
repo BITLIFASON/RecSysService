@@ -8,6 +8,10 @@ readme = "README.md"
 packages = [
     { include = "service" }
 ]
+exclude = [
+    "service/recmodels_folder/popular_answer.pkl",
+    "service/recmodels_folder/user_knn.xz"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
