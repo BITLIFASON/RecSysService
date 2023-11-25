@@ -4,11 +4,11 @@ from fastapi import APIRouter, FastAPI, Request, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
-from service import recmodels
 from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserNotFoundError
 from service.credentials import API_KEY
 from service.log import app_logger
 from service.models import Error
+from service.recmodels import popular, simple_range, user_knn
 
 
 class RecoResponse(BaseModel):
@@ -45,10 +45,7 @@ async def health() -> str:
 
 @typing.no_type_check
 @router.get(
-    path="/reco/{model_name}/{user_id}",
-    tags=["Recommendations"],
-    response_model=RecoResponse,
-    responses=responses
+    path="/reco/{model_name}/{user_id}", tags=["Recommendations"], response_model=RecoResponse, responses=responses
 )
 async def get_reco(
     request: Request, model_name: str, user_id: int, token: str = Security(verify_token)
@@ -60,7 +57,11 @@ async def get_reco(
 
     k_recs = request.app.state.k_recs
     if model_name == "simple_range":
-        reco = recmodels.simple_range(k_recs)
+        reco = simple_range.predict()
+    elif model_name == "popular":
+        reco = popular.predict()
+    elif model_name == "user_knn":
+        reco = user_knn.predict(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 
