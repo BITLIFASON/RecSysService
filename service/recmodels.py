@@ -44,7 +44,8 @@ class userKNN:
         if user_id in self.user_knn.users_mapping:
             reco = self.user_knn.eval(user_id, N_recs=self.N_recs).item_id.to_list()
             if len(reco) < self.N_recs:
-                reco += self.popular_model.predict()[: self.N_recs - len(reco)]
+                reco_popular = self.popular_model.predict()
+                reco += [item for item in reco_popular if item not in reco][: self.N_recs - len(reco)]
         else:
             reco = self.popular_model.predict()
         return reco
