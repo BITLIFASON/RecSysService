@@ -12,7 +12,7 @@ bind = f"{host}:{port}"
 backlog = env("GUNICORN_BACKLOG", 2048)
 
 # The number of worker processes for handling requests.
-workers = env("GUNICORN_WORKERS", cpu_count()//2)
+workers = env("GUNICORN_WORKERS", cpu_count())
 
 # The type of workers to use.
 worker_class = env("GUNICORN_WORKER_CLASS", "uvicorn.workers.UvicornWorker")
@@ -72,7 +72,7 @@ limit_request_fields = env("GUNICORN_LIMIT_REQUEST_FIELDS", 64)
 limit_request_field_size = env("GUNICORN_LIMIT_REQUEST_FIELD_SIZE", 128)
 
 # Load application code before the worker processes are forked.
-preload_app = env("GUNICORN_PRELOAD_APP", False)
+preload_app = env("GUNICORN_PRELOAD_APP", True)
 
 # Disables the use of sendfile.
 sendfile = env("GUNICORN_SENDFILE", True)

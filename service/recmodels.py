@@ -3,7 +3,6 @@
 import lzma
 import pickle
 
-# from service.recmodels_folder import userknn
 from service.settings import get_config
 
 
@@ -51,8 +50,6 @@ class userKNN:
         return reco
 
 
-#
-#
 app_config = get_config()
 
 simple_range = Range(N_recs=app_config.k_recs)
