@@ -25,7 +25,7 @@ class Popular:
         with open("./service/recmodels_folder/popular_answer.pkl", "rb") as file:
             self.answer = pickle.load(file)
 
-    def predict(self):
+    def predict(self) -> list:
         return self.answer
 
 
@@ -40,7 +40,7 @@ class userKNN:
 
         self.popular_model = Popular(self.N_recs)
 
-    def predict(self, user_id):
+    def predict(self, user_id: int) -> list:
         if user_id in self.user_knn.users_mapping:
             reco = self.user_knn.eval(user_id, N_recs=self.N_recs).item_id.to_list()
             if len(reco) < self.N_recs:
