@@ -8,6 +8,10 @@ readme = "README.md"
 packages = [
     { include = "service" }
 ]
+exclude = [
+    "service/recmodels_folder/popular_answer.pkl",
+    "service/recmodels_folder/user_knn.xz"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
@@ -20,6 +24,10 @@ orjson = "^3.9.10"
 starlette = "^0.27.0"
 httpx = "^0.22.0"  # for starlette.testclient
 pydantic-settings = "^2.0.3"
+numpy = "*"
+pandas = "*"
+scipy = "*"
+implicit = "*"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "7.4.3"
