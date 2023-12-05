@@ -1,3 +1,5 @@
+# type: ignore
+
 """RecSys Models"""
 
 import lzma
