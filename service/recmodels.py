@@ -116,7 +116,5 @@ simple_range = Range(N_recs=app_config.k_recs)
 popular = Popular(N_recs=app_config.k_recs)
 
 user_knn = userKNN(N_recs=app_config.k_recs)
-# user_knn.load()
 
 ann_als = ANN_ALS(N_recs=app_config.k_recs)
-ann_als.load()
