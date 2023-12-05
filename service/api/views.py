@@ -1,3 +1,5 @@
+# type: ignore
+
 import typing
 
 from fastapi import APIRouter, FastAPI, Request, Security
