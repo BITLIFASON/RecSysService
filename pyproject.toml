@@ -45,6 +45,15 @@ black = "^23.10.1"
 line-length = 120
 target-version = ["py38", "py39", "py310"]
 
+[tool.mypy]
+strict = True
+implicit_reexport = True
+disallow_untyped_defs = False
+disable_error_code = [
+    "attr-defined", 
+    "no-untyped-def",
+]
+
 [build-system]
 requires = ["poetry>=1.0.5"]
 build-backend = "poetry.masonry.api"
