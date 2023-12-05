@@ -8,7 +8,7 @@ from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserN
 from service.credentials import API_KEY
 from service.log import app_logger
 from service.models import Error
-from service.recmodels import popular, simple_range, user_knn, ann_als
+from service.recmodels import ann_als, popular, simple_range, user_knn
 
 
 class RecoResponse(BaseModel):

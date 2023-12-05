@@ -3,10 +3,10 @@
 import lzma
 import pickle
 
-from service.settings import get_config
-
 import nmslib
 from rectools.tools.ann import UserToItemAnnRecommender
+
+from service.settings import get_config
 
 
 class Range:
@@ -68,9 +68,8 @@ class ANN_ALS:
     """Class for predict ALS model"""
 
     def __init__(self, N_recs: int = 10):
-
         self.N_recs = N_recs
-        self.als = None
+        self.als_wrapper = None
         self.ann = None
         self.item_id_map = None
         self.user_id_map = None
@@ -92,12 +91,14 @@ class ANN_ALS:
                 self.item_id_map = pickle.load(file)
 
             index_init_params = {"method": "hnsw", "space": "negdotprod", "data_type": nmslib.DataType.DENSE_VECTOR}
-            self.ann = UserToItemAnnRecommender(user_vectors=self.user_vectors,
-                                                item_vectors=self.item_vectors,
-                                                user_id_map=self.user_id_map,
-                                                item_id_map=self.item_id_map,
-                                                index_init_params=index_init_params)
-            self.ann.index.loadIndex('./service/recmodels_folder/ann_index.pkl')
+            self.ann = UserToItemAnnRecommender(
+                user_vectors=self.user_vectors,
+                item_vectors=self.item_vectors,
+                user_id_map=self.user_id_map,
+                item_id_map=self.item_id_map,
+                index_init_params=index_init_params,
+            )
+            self.ann.index.loadIndex("./service/recmodels_folder/ann_index.pkl")
             self.load_flag = True
 
     def predict(self, user_id: int) -> list:
