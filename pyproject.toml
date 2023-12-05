@@ -46,9 +46,8 @@ line-length = 120
 target-version = ["py38", "py39", "py310"]
 
 [tool.mypy]
-strict = True
-implicit_reexport = True
-disallow_untyped_defs = False
+strict = true
+implicit_reexport = true
 disable_error_code = [
     "attr-defined", 
     "no-untyped-def",
