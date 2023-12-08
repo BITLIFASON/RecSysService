@@ -8,7 +8,7 @@ from service.api.exceptions import AuthorizationError, ModelNotFoundError, UserN
 from service.credentials import API_KEY
 from service.log import app_logger
 from service.models import Error
-from service.recmodels import popular, simple_range, user_knn
+from service.recmodels import ann_als, popular, simple_range, user_knn
 
 
 class RecoResponse(BaseModel):
@@ -58,9 +58,14 @@ async def get_reco(
     if model_name == "simple_range":
         reco = simple_range.predict()
     elif model_name == "popular":
+        popular.load()
         reco = popular.predict()
     elif model_name == "user_knn":
+        user_knn.load()
         reco = user_knn.predict(user_id)
+    elif model_name == "ANN_ALS":
+        ann_als.load()
+        reco = ann_als.predict(user_id)
     else:
         raise ModelNotFoundError(error_message=f"Model {model_name} not found")
 

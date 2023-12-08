@@ -66,4 +66,12 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# recomendation models
+service/recmodels_folder/user_knn.xz
+service/recmodels_folder/als_wrapper.pkl
+service/recmodels_folder/ann_index.pkl
+service/recmodels_folder/item_id_map.pkl
+service/recmodels_folder/user_id_map.pkl
+
+
 
