@@ -6,6 +6,7 @@ import lzma
 import pickle
 
 import nmslib
+import pandas as pd
 from rectools.tools.ann import UserToItemAnnRecommender
 
 from service.settings import get_config
@@ -111,6 +112,33 @@ class ANN_ALS:
         return reco
 
 
+class Ranker_ALS:
+    """Class for predict ranker model"""
+
+    def __init__(self, N_recs: int = 10):
+        self.N_recs = N_recs
+        self.df_ranker = None
+        self.ranker_user_ids = None
+        self.load_flag = False
+        self.popular_model = Popular(self.N_recs)
+
+    def load(self):
+        if not self.load_flag:
+            self.df_ranker = pd.read_pickle("./service/recmodels_folder/ranker_inference.pkl")
+            self.df_ranker.set_index("user_id", inplace=True)
+            with open("./service/recmodels_folder/ranker_user_ids.pkl", "rb") as file:
+                self.ranker_user_ids = pickle.load(file)
+            self.popular_model.load()
+            self.load_flag = True
+
+    def predict(self, user_id: int) -> list:
+        if user_id in self.ranker_user_ids:
+            reco = self.df_ranker.loc[user_id, "item_id"]
+        else:
+            reco = self.popular_model.predict()
+        return reco
+
+
 app_config = get_config()
 
 simple_range = Range(N_recs=app_config.k_recs)
@@ -120,3 +148,5 @@ popular = Popular(N_recs=app_config.k_recs)
 user_knn = userKNN(N_recs=app_config.k_recs)
 
 ann_als = ANN_ALS(N_recs=app_config.k_recs)
+
+ranker_als = Ranker_ALS(N_recs=app_config.k_recs)

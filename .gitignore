@@ -72,6 +72,8 @@ service/recmodels_folder/als_wrapper.pkl
 service/recmodels_folder/ann_index.pkl
 service/recmodels_folder/item_id_map.pkl
 service/recmodels_folder/user_id_map.pkl
+service/recmodels_folder/ranker_inference.pkl
+service/recmodels_folder/ranker_user_ids.pkl
 
 
 
